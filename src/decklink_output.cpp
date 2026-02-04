@@ -594,6 +594,14 @@ void DecklinkOutput::fill_decklink_video_frame(IDeckLinkVideoFrame* decklink_vid
 
                     pixel_swizzler_.cpy16bitRGBA_to_10bitRGB(pFrame, the_frame->buffer(), num_pix);
 
+                } else if (decklink_video_frame->GetPixelFormat() == bmdFormat10BitRGBXLE) {
+
+                    pixel_swizzler_.cpy16bitRGBA_to_10bitRGBXLE(pFrame, the_frame->buffer(), num_pix);
+
+                } else if (decklink_video_frame->GetPixelFormat() == bmdFormat10BitRGBX) {
+
+                    pixel_swizzler_.cpy16bitRGBA_to_10bitRGBX(pFrame, the_frame->buffer(), num_pix);
+
                 } else if (decklink_video_frame->GetPixelFormat() == bmdFormat12BitRGB) {
 
                     pixel_swizzler_.cpy16bitRGBA_to_12bitRGB(pFrame, the_frame->buffer(), num_pix);

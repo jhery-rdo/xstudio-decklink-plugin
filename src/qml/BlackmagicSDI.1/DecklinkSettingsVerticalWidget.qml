@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.14
-import QtQuick.Layouts 1.3
-import Qt.labs.qmlmodels 1.0
+import QtQuick
+import QtQuick.Layouts
 
 import xStudio 1.0
 import xstudio.qml.models 1.0
-import xstudio.qml.helpers 1.0
 
 Item {
 
@@ -181,9 +178,11 @@ Item {
                 label_text: "Image Fit Mode"
                 attrs_model: decklink_viewport_attributes
                 attr_name: "Fit (F)"
+                enabled: !link_toggle.attr_value
             }
 
             DecklinkToggleSetting {
+                id: link_toggle
                 display_name: "Track Zoom/Pan"
                 toggle_attr_name: "Track Viewport"
             }
@@ -213,9 +212,34 @@ Item {
                 color: XsStyleSheet.widgetBgNormalColor
             }
 
-            XsLabel {
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                text: "Advanced"
+            RowLayout {
+
+                Layout.fillWidth:  true
+                spacing: 10
+
+                XsSecondaryButton{
+
+                    id: subsetBtn
+                    z: 100
+                    imgSrc: "qrc:/icons/chevron_right.svg"
+                    width: 20
+                    height: 20
+                    rotation: advanced_settings.visible ? 90:0
+                    imageSrcSize: width
+                    Behavior on rotation {NumberAnimation{duration: 150 }}
+                    bgColorPressed: bgColorNormal
+                    onClicked:{
+                        advanced_settings.visible = !advanced_settings.visible
+                    }
+
+                }
+
+                XsLabel {
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                    height: 1
+                    text: "Advanced"
+                }
+
             }
 
             ColumnLayout {
@@ -223,7 +247,7 @@ Item {
                 spacing: 10
                 id: advanced_settings
                 Layout.fillWidth: true
-                visible: true
+                visible: false
     
                 DecklinkMultichoiceSetting {
                     Layout.fillWidth: true
@@ -250,19 +274,16 @@ Item {
                 }
 
                 DecklinkIntegerSetting {
-                    Layout.fillWidth: true
                     integer_attr_name: "Audio Sync Delay"
-                    display_name: "Audio Delay (ms)"
+                    display_name: "Audio Delay / msec"
                 }
-                    
+
                 DecklinkIntegerSetting {
-                    Layout.fillWidth: true
                     integer_attr_name: "Video Sync Delay"
-                    display_name: "Video Delay (ms)"
+                    display_name: "Video Delay / msec"
                 }
 
                 DecklinkToggleSetting {
-                    Layout.fillWidth: true
                     display_name: "Mute PC Audio"
                     toggle_attr_name: "Auto Disable PC Audio"
                 }
